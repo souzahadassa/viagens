@@ -1,40 +1,167 @@
-API de Usuários
+# API REST de Missões Espaciais
+ 
+## 1. Identificação
+ 
+- **Nome completo:** Hadassa Maria Souza
 
+- **Curso:** Informática para Internet 
 
-1. Identificação
-Nome completo do aluno: Hadassa Maria Souza
-Curso: 2 Técnico em Informática
-Unidade Curricular: Desenvolver Serviços Web
+- **Unidade Curricular:** Desenvolver Serviços Web
+ 
+## 2. Descrição do Projeto
+ 
+API REST para cadastro, consulta, atualização e remoção de missões espaciais históricas e futuras. Os dados trafegam em JSON e a aplicação já inicia com 5 missões de exemplo. Os dados são persistidos no arquivo `data/missoes.json` (criado automaticamente na primeira requisição).
+ 
+## 3. Tecnologias Utilizadas
+ 
+- PHP
 
+- Slim Framework 4
 
-3. Como instalar as dependências
-Requisitos
-PHP não instalado no computador;
-Composer instalado;
-Postman para testar as requisições da API.
-Passos para instalação
-Baixe ou clone o repositório do projeto para o computador.
-Abra o terminal na pasta raiz do projeto, onde está localizado o arquivo composer.json.
-Execute o comando abaixo para instalar as dependências:
-Caso as dependências do Slim ainda não estejam instaladas, execute:
-Inicie o servidor PHP usando o arquivo principal da API. Ajuste o caminho conforme a localização do arquivo no projeto.
-Abra o Postman e envie uma requisição GET para:
-http://localhost:8080/status
-Se a instalação e a execução forem corretas, a API retornará uma mensagem informando que está funcionando.
+- Composer
 
+- JSON
+ 
+## 4. Como Clonar o Projeto
+ 
+```bash
 
-4. Decisões Técnicas
-Uma API foi desenvolvida utilizando PHP e Slim Framework 4, permitindo a criação de rotas para realização de operações relacionadas ao gerenciamento de usuários por meio de requisições HTTP.
-Os dados são retornados no formato JSON, facilitando a comunicação entre a API e ferramentas de teste, como o Postman.
-Nesta versão, os usuários são armazenados temporariamente em um array PHP, sem conexão com um banco de dados. Dessa forma, as alterações realizadas durante a execução não são mantidas após o encerramento ou reinício da aplicação.
-As funcionalidades inovadoras são:
-GET /status: verifica se a API está funcionando.
-GET /usuários: lista todos os usuários cadastrados.
-GET /usuários/{id}: consulta um usuário específico pelo identificador.
-POST /usuários: cadastrar um novo usuário.
-PUT /usuarios/{id}: atualiza os dados de um usuário.
-DELETE /usuarios/{id}: remove um usuário.
-POST /login: verifica as credenciais informadas para autenticação.
-PUT /usuarios/{id}/senha: permite alterar a senha de um usuário após a validação da senha atual.
-O projeto também realiza validações dos campos obrigatórios e utiliza códigos de status HTTP para indicar o resultado das operações, como 200 para sucesso, 201 para criação, 400 para requisições inválidas, 401 para falhas de autenticação e 404 quando um usuário não é encontrado.
-Para evitar a exposição direta das senhas nas respostas de consulta, os valores são substituídos por asteriscos. Entretanto, em uma aplicação real, é necessário armazenar as senhas de maneira segura, utilizando funções como password_hash()e password_verify().
+git clone URL_DO_REPOSITORIO
+
+cd NOME_DA_PASTA
+
+```
+ 
+## 5. Como Instalar as Dependências
+ 
+```bash
+
+composer install
+
+```
+ 
+## 6. Como Executar o Projeto
+ 
+```bash
+
+php -S localhost:8080 index.php
+
+```
+ 
+A API ficará disponível em `http://localhost:8080`.
+ 
+## 7. Documentação dos Endpoints
+ 
+### GET /status
+
+- **Objetivo:** verificar o funcionamento da API.
+
+- **Requisição:** `GET http://localhost:8080/status`
+
+- **Resposta (200 OK):**
+
+```json
+
+{ "status": "ok" }
+
+```
+ 
+### GET /missoes
+
+- **Objetivo:** listar todas as missões.
+
+- **Requisição:** `GET http://localhost:8080/missoes`
+
+- **Resposta (200 OK):**
+
+```json
+
+[
+
+  { "id": 1, "nome": "Apollo 11", "ano": 1969, "agencia": "NASA", "status": "Concluída" }
+
+]
+
+```
+ 
+### GET /missoes/{id}
+
+- **Objetivo:** buscar uma missão pelo ID.
+
+- **Requisição:** `GET http://localhost:8080/missoes/1`
+
+- **Resposta (200 OK):**
+
+```json
+
+{ "id": 1, "nome": "Apollo 11", "ano": 1969, "agencia": "NASA", "status": "Concluída" }
+
+```
+
+- **Resposta (404 Not Found):**
+
+```json
+
+{ "erro": "Missão não encontrada" }
+
+```
+ 
+### POST /missoes
+
+- **Objetivo:** cadastrar uma nova missão.
+
+- **Requisição:** `POST http://localhost:8080/missoes`
+
+```json
+
+{ "nome": "Artemis III", "ano": 2027, "agencia": "NASA", "status": "Planejada" }
+
+```
+
+- **Resposta (201 Created):**
+
+```json
+
+{ "id": 6, "nome": "Artemis III", "ano": 2027, "agencia": "NASA", "status": "Planejada" }
+
+```
+
+- **Resposta (400 Bad Request)** se faltar algum campo obrigatório.
+ 
+### PUT /missoes/{id}
+
+- **Objetivo:** atualizar uma missão existente.
+
+- **Requisição:** `PUT http://localhost:8080/missoes/6`
+
+```json
+
+{ "nome": "Artemis III", "ano": 2027, "agencia": "NASA", "status": "Em preparação" }
+
+```
+
+- **Resposta (200 OK):**
+
+```json
+
+{ "id": 6, "nome": "Artemis III", "ano": 2027, "agencia": "NASA", "status": "Em preparação" }
+
+```
+
+- **Resposta (404 Not Found):**
+
+```json
+
+{ "erro": "Missão não encontrada" }
+
+```
+ 
+### DELETE /missoes/{id}
+
+- **Objetivo:** remover uma missão.
+
+- **Requisição:** `DELETE http://localhost:8080/missoes/6`
+
+- **Resposta:** `204 No Content` (sem corpo) ou `404 Not Found` se não existir.
+ 
+ 
